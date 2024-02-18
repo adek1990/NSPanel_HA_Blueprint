@@ -831,7 +831,7 @@ globals:
   - id: is_embedded_thermostat
     type: bool
     restore_value: true
-    initial_value: 'false'
+    initial_value: 'true'
 
   ##### Save Display Brightness for NSPanel reboot #####
   - id: display_brightness_global
@@ -1879,6 +1879,9 @@ script:
       - lambda: |-
           if (id(embedded_indoor_temp) or (!wifi_component->is_connected()) or (!api_server->is_connected())) {
             float unit_based_temperature = temp_nspanel->state;
+            if (id(is_embedded_thermostat)) {
+              unit_based_temperature = thermostat_embedded->current_temperature;
+            }
             std::string temp_units = "${temp_units}";
             if (temp_units == "°F" || temp_units == "F" || temp_units == "°f" || temp_units == "f")
               unit_based_temperature = (unit_based_temperature * 9 / 5) + 32;
