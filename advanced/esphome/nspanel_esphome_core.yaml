@@ -78,13 +78,22 @@ esp32:
 wifi:
   id: wifi_component
   power_save_mode: LIGHT
+  manual_ip:
+    static_ip: ${wifi_static_ip}
+    gateway: ${wifi_gateway}
+    subnet: ${wifi_subnet}
+    dns1: 8.8.8.8
+    dns2: 8.8.4.4
   networks:
     - id: wifi_default
       ssid: ${wifi_ssid}
       password: ${wifi_password}
+    - id: wifi_2
+      ssid: ${wifi_ssid_2}
+      password: ${wifi_password_2}
   ap:
     ssid: "${name}"
-    password: ${ap_password}
+    password: ${wifi_password}
   on_connect:
     then:
       - script.execute: watchdog
